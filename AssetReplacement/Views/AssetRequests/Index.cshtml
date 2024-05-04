@@ -1,0 +1,202 @@
+﻿@{
+    ViewData["Title"] = "Asset Request Form";
+}
+<link href="~/vendor/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+<link href="~/vendor/bootstrap-table/bootstrap-table-sticky-header.css" rel="stylesheet" />
+
+<div class="row gutters mt-4">
+    <div class="card">
+        <div class="card-header text-center" style="font-size: 1.00rem;">Asset Request Form</div>
+        <hr class="m-0" />
+        <div class="card-body">
+            <div id="toolbar">
+                <div class="btn-group me-2">
+                    <a class="btn btn-primary " asp-action="Create">Add New Request</a>
+                </div>
+            </div>
+            <table id="table"
+                   data-toggle="table"
+                   data-locale="en-US"
+                   data-sticky-header="true"
+                   data-sticky-header-offset-y="60"
+                   data-search="true"
+                   data-toolbar="#toolbar"
+                   data-search-highlight="true"
+                   data-search-align="right"
+                   data-show-toggle="true"
+                   data-show-refresh="true"
+                   data-show-columns="true"
+                   data-buttons="[]"
+                   data-key-events="true"
+                   data-url="@Url.Action("GetData", "AssetRequests")"
+                   data-pagination="true"
+                   data-side-pagination="server"
+                   data-show-columns-toggle-all="true"
+                   data-pagination-loop="false"
+                   data-pagination-pre-text="Previous"
+                   data-pagination-next-text="Next"
+                   data-page-size="50">
+                <thead>
+                    <tr>
+
+                        <th data-field="name" data-sortable="true" data-width="200">Name</th>
+                        <th data-field="departement" data-sortable="true" data-width="150">Departement</th>
+                        <th data-field="type" data-sortable="true" data-width="100">Type</th>
+                        <th data-field="serialNumber" data-sortable="true" data-width="150">Serial Number</th>
+                        <th data-field="baseline" data-sortable="true" data-width="150">Baseline</th>
+                        <th data-field="usageLocation" data-sortable="true" data-width="150">Usage Location</th>
+                        <th data-field="reason" data-sortable="true" data-width="300">Reason</th>
+                        <th data-field="justify" data-sortable="true" data-width="200">Justify</th>
+                        <th data-field="requestDate" data-sortable="true" data-width="150">Request Date</th>
+                        <th data-field="status" data-sortable="true" data-formatter="statusFormatter" class="text-center" data-width="150">Status</th>
+                        <th data-field="approvalDate" data-sortable="true" data-width="150">Approval Date</th>
+                        <th data-formatter="viewFormatter" class="text-center no-space-three text-nowrap" data-width="250">Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/vendor/bootstrap-table/bootstrap-table-sticky-header.min.js"></script>
+    <script src="~/vendor/bootstrap-table/bootstrap-table-filter-control.min.js"></script>
+    <script src="~/vendor/bootstrap-table/bootstrap-table-pagination.min.js"></script>
+    <script src="~/vendor/bootstrap-table/bootstrap-table-column-toggle.min.js"></script>
+    <script>
+                    function statusFormatter(value, row, index) {
+                    let statusHtml;
+                    if (value === null) {
+                        statusHtml = '<span class="badge rounded-pill text-bg-secondary" style="line-height: 1; vertical-align: middle;">Waiting for Approval</span>';
+                    } else if (value === true) {
+                        statusHtml = '<span class="badge rounded-pill text-bg-success" style="line-height: 1; vertical-align: middle;">Approved</span>';
+                    } else {
+                        statusHtml = '<span class="badge rounded-pill text-bg-danger" style="line-height: 1; vertical-align: middle;">Rejected</span>';
+                    }
+                    return statusHtml;
+                }
+
+            function viewFormatter(value, row, index) {
+            return `
+                <a href="/AssetRequests/Edit/${row.id}" class="btn btn-sm btn-info">Edit</a>
+                <a href="/AssetRequests/Details/${row.id}" class="btn btn-sm btn-primary">Details</a>
+                <a href="/AssetRequests/Delete/${row.id}" class="btn btn-sm btn-danger">Delete</a>
+            `;
+        }
+
+            $(function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            @:Swal.fire("Success!", "@TempData["SuccessMessage"]", "success");
+        }
+                    });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+@* @model IEnumerable<AssetReplacement.Models.AssetRequest>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SerialNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Baseline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsageLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequestDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reason)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Justify)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerialNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Baseline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsageLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovalDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Justify)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@

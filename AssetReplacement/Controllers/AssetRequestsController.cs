@@ -40,11 +40,12 @@ namespace AssetReplacement.Controllers
                     serialNumber = g.SerialNumber,
                     baseline = g.Baseline,
                     usageLocation = g.UsageLocation,
-                    reason = g.Reason,
-                    justify = g.Justify,
                     requestDate = g.RequestDate.HasValue ? g.RequestDate.Value.ToString("dd MMM yyyy") : null,
+                    reason = g.Reason,
                     status = g.Status,
                     approvalDate = g.ApprovalDate.HasValue ? g.ApprovalDate.Value.ToString("dd MMM yyyy") : null,
+                    justify = g.Justify,
+                    typeReplace = g.TypeReplace,
                 }).ToList();
 
             return Json(new { rows = AssetRequests });
@@ -77,19 +78,26 @@ namespace AssetReplacement.Controllers
         // POST: AssetRequests/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Departement,Type,SerialNumber,Baseline,UsageLocation,Reason,Justify,Status,ApprovalDate,RequestDate")] AssetRequest assetRequest)
+        public async Task<IActionResult> Create([Bind("Name,Departement,Type,SerialNumber,Baseline,UsageLocation,RequestDate,Reason")] AssetRequest assetRequest)
         {
             if (ModelState.IsValid)
             {
+                // Set default values for properties that should not be set in the Create action
+                assetRequest.Status = null;
+                assetRequest.ApprovalDate = null;
+                assetRequest.Justify = null;
+                assetRequest.TypeReplace = null;
 
-                assetRequest.Status = null; // Menetapkan nilai Status sebagai null (Waiting for Approval)
                 _context.Add(assetRequest);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Request has been created successfully.";
+                TempData["SuccessMessage"] = "Asset Request has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
+
             return View(assetRequest);
         }
 
@@ -110,13 +118,13 @@ namespace AssetReplacement.Controllers
         }
         // POST: AssetRequest/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Departement,Type,SerialNumber,Baseline, UsageLocation, RequestDate,Reason,Status,ApprovalDate,Justify")] AssetRequest assetRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Departement,Type,SerialNumber,Baseline,UsageLocation,RequestDate,Reason,Status")] AssetRequest assetRequest)
         {
             if (id != assetRequest.Id)
             {
                 return NotFound();
             }
+
             var existingRecord = await _context.AssetRequests.FindAsync(id);
             if (existingRecord == null)
             {
@@ -127,7 +135,6 @@ namespace AssetReplacement.Controllers
             {
                 try
                 {
-                    existingRecord.Id = assetRequest.Id;
                     existingRecord.Name = assetRequest.Name;
                     existingRecord.Departement = assetRequest.Departement;
                     existingRecord.Type = assetRequest.Type;
@@ -136,8 +143,11 @@ namespace AssetReplacement.Controllers
                     existingRecord.UsageLocation = assetRequest.UsageLocation;
                     existingRecord.RequestDate = assetRequest.RequestDate;
                     existingRecord.Reason = assetRequest.Reason;
-                    existingRecord.Justify = assetRequest.Justify;
+                    existingRecord.Status = assetRequest.Status; // Mempertahankan nilai Status yang sudah ada
                     existingRecord.ApprovalDate = assetRequest.ApprovalDate;
+                    existingRecord.Justify = assetRequest.Justify;
+                    existingRecord.TypeReplace = assetRequest.TypeReplace;
+
                     _context.Update(existingRecord);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Asset Request has been updated successfully.";
@@ -155,7 +165,6 @@ namespace AssetReplacement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
             return View(assetRequest);
         }
 
@@ -218,5 +227,7 @@ namespace AssetReplacement.Controllers
             var assetrequestToApprove = _context.AssetRequests.Where(c => !c.Status.HasValue);
             return View(assetrequestToApprove);
         }
+
+       
     }
 }

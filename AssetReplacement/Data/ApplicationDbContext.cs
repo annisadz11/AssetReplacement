@@ -10,9 +10,8 @@ namespace AssetReplacement.Data
         }
 
         public DbSet<AssetRequest> AssetRequests { get; set; }
+        public DbSet<AssetScrap> AssetScraps { get; set; }
 
-        // Tambahkan DbSet untuk model lain yang Anda miliki
-        // public DbSet<AssetReplacement> AssetReplacements { get; set; }
-        // public DbSet<AssetScrap> AssetScraps { get; set; }
+
     }
 }

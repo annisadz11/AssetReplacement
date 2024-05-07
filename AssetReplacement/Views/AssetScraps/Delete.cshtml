@@ -1,0 +1,85 @@
+﻿@model AssetReplacement.Models.AssetScrap
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="row gutters justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card">
+            <div class="card-header text-center border-bottom">
+                <h2 class="card-title font-weight-bold">Asset Scrap Delete</h2>
+            </div>
+            <hr class="m-0" />
+            <div class="card-body">
+                <div class="row">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="@Model.Type" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Serial Number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="@Model.SerialNumber" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <div class="input-group">
+                                <textarea class="form-control" rows="3" readonly>@Model.Location</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Date Input</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="@Model.DateInput" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="input-group">
+                                @if (!Model.Status.HasValue)
+                                {
+                                    <span class="form-control badge badge-warning">Waiting for Success</span>
+                                }
+                                else if (Model.Status.Value)
+                                {
+                                    <span class="form-control badge badge-success">Success</span>
+                                }
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <form asp-action="Delete" id="deleteForm">
+                <input type="hidden" asp-for="Id" />
+                <button type="button" class="btn btn-danger" onclick="confirmDelete(@Model.Id, '#deleteForm')">Delete</button>
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, formSelector) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(formSelector).submit();
+                }
+            });
+        }
+    </script>
+}

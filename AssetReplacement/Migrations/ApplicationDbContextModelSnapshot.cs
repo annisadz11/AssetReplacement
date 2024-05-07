@@ -66,6 +66,9 @@ namespace AssetReplacement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TypeReplace")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UsageLocation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,6 +76,37 @@ namespace AssetReplacement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AssetRequests");
+                });
+
+            modelBuilder.Entity("AssetReplacement.Models.AssetScrap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateInput")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssetScraps");
                 });
 #pragma warning restore 612, 618
         }

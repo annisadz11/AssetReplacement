@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AssetReplacement.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using AssetReplacement.Data;
-using AssetReplacement.Models;
 
 namespace AssetReplacement.Controllers
 {
@@ -40,11 +33,12 @@ namespace AssetReplacement.Controllers
                     serialNumber = g.SerialNumber,
                     baseline = g.Baseline,
                     usageLocation = g.UsageLocation,
-                    reason = g.Reason,
-                    justify = g.Justify,
                     requestDate = g.RequestDate.HasValue ? g.RequestDate.Value.ToString("dd MMM yyyy") : null,
+                    reason = g.Reason,
                     status = g.Status,
                     approvalDate = g.ApprovalDate.HasValue ? g.ApprovalDate.Value.ToString("dd MMM yyyy") : null,
+                    justify = g.Justify,
+                    typeReplace = g.TypeReplace,
                 }).ToList();
 
             return Json(new { rows = AssetRequests });
@@ -98,3 +92,4 @@ namespace AssetReplacement.Controllers
         }
     }
 }
+

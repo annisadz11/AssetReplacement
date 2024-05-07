@@ -42,6 +42,7 @@
                         <th data-field="usageLocation" data-sortable="true" data-width="150">Usage Location</th>
                         <th data-field="reason" data-sortable="true" data-width="300">Reason</th>
                         <th data-field="justify" data-sortable="true" data-width="200">Justify</th>
+                        <th data-field="typeReplace" data-sortable="true" data-width="200">Type Replace</th>
                         <th data-field="requestDate" data-sortable="true" data-width="150">Request Date</th>
                         <th data-field="status" data-sortable="true" data-formatter="statusFormatter" class="text-center" data-width="150">Status</th>
                         <th data-field="approvalDate" data-sortable="true" data-width="150">Approval Date</th>
@@ -65,6 +66,10 @@
                     <div class="form-group">
                         <label for="approveJustification" class="col-form-label">Justification:</label>
                         <textarea class="form-control" id="approveJustification"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="typeReplace" class="col-form-label">Type Replace:</label>
+                        <input type="text" class="form-control" id="typeReplace">
                     </div>
                 </form>
             </div>
@@ -90,6 +95,10 @@
                         <label for="rejectJustification" class="col-form-label">Justification:</label>
                         <textarea class="form-control" id="rejectJustification"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="typeReplace" class="col-form-label">Type Replace:</label>
+                        <input type="text" class="form-control" id="typeReplace">
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -104,10 +113,8 @@
     <script src="~/vendor/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="~/vendor/bootstrap-table/bootstrap-table-sticky-header.min.js"></script>
     <script src="~/vendor/bootstrap-table/bootstrap-table-filter-control.min.js"></script>
-    <script src="~/vendor/bootstrap-table/bootstrap-table-pagination.min.js"></script>
-    <script src="~/vendor/bootstrap-table/bootstrap-table-column-toggle.min.js"></script>
-    <script src="~/vendor/bootstrap-modal/bootstrap-modal.js"></script>
-    <script src="~/vendor/bootstrap-modal/bootstrap-modalmanager.js"></script>
+	<script src="~/vendor/bootstrap-modal/js/bootstrap-modal.js"></script>
+	<script src="~/vendor/bootstrap-modal/js/bootstrap-modal.min.js"></script>
     <script>
         function statusFormatter(value, row, index) {
             let statusHtml;
@@ -131,11 +138,12 @@
             $('#approveModal').modal('show');
             $('#approveButton').off('click').on('click', function () {
                 var justify = $('#approveJustification').val().trim();
+                var typeReplace = $('#typeReplace').val().trim(); // Ambil nilai dari elemen input TypeReplace
                 if (justify !== '') {
                     $.ajax({
                         url: "@Url.Action("Approve", "AssetApproval")",
                         type: "POST",
-                        data: { id: id, justify: justify },
+                        data: { id: id, justify: justify, typeReplace: typeReplace }, // Kirimkan nilai TypeReplace
                         success: function (response) {
                             if (response.success) {
                                 Swal.fire({
@@ -180,11 +188,12 @@
             $('#rejectModal').modal('show');
             $('#rejectButton').off('click').on('click', function () {
                 var justify = $('#rejectJustification').val().trim();
+                var typeReplace = $('#typeReplace').val().trim();
                 if (justify !== '') {
                     $.ajax({
                         url: "@Url.Action("Reject", "AssetApproval")",
                         type: "POST",
-                        data: { id: id, justify: justify },
+                        data: { id: id, justify: justify, typeReplace: typeReplace },
                         success: function (response) {
                             if (response.success) {
                                 Swal.fire({

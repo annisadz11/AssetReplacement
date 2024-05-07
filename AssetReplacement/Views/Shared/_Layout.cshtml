@@ -11,15 +11,26 @@
 	<!-- Main css -->
 	<link rel="stylesheet" href="~/css/main.css">
 	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-	@* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> *@
-	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
 	<!-- SweetAlert2 -->
 	<link href="~/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+	<style>
+		.page-wrapper {
+			background-image: url('/img/leaf.png');
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+			background-attachment: fixed;
+		}
 
+		h2 {
+			color: #808080; /* Warna teks abu abu */
+			text-shadow: 2px 2px 4px #fff(0, 0, 0, 0.5); /* Bayangan teks untuk kontras */
+			padding-top: 3px; /* Padding atas */
+			padding-bottom: 3px; /* Padding bawah */
+		}
+	</style>
 
 </head>
-
-
 
 
 <body>
@@ -82,7 +93,6 @@
 	<!-- Main JS -->
 	<script src="~/js/main.js"></script>
 	@await RenderSectionAsync("Scripts", required: false)
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
 		function updateDateTime() {
 			var currentDate = new Date();

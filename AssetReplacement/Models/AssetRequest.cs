@@ -18,5 +18,6 @@ namespace AssetReplacement.Models
         public bool? Status { get; set; }
         public DateTime? ApprovalDate { get; set; }
         public string? Justify { get; set; }
+        public string? TypeReplace { get; set; }
     }
 }
